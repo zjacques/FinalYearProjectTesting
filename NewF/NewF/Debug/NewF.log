@@ -1,0 +1,28 @@
+﻿  FFT.cpp
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(18): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(56): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(115): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(116): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(125): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(140): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(141): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(142): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(143): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(144): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(147): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(148): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(210): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(211): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(219): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(238): warning C4244: 'initializing': conversion from 'const double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(240): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(240): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(241): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(243): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(245): warning C4305: '*=': truncation from 'double' to 'float'
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(247): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(253): warning C4244: 'initializing': conversion from 'const double' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(253): warning C4018: '<': signed/unsigned mismatch
+  NewF.vcxproj -> C:\Users\gameuser\Documents\Citations\newF\NewF\Debug\NewF.exe
