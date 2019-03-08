@@ -6,6 +6,8 @@
 #include <complex>
 #include <valarray>
 #include <math.h>
+#include <numeric>
+#include "moodbarbuilder.h"
 
 const double PI = 3.141592653589793238460 ;
 
@@ -26,6 +28,8 @@ public:
 
 	void moodBar();
 
+	void beatDetect();
+
 	void update() ;
 
 	void bars(float const& max) ;
@@ -34,6 +38,7 @@ public:
 	void draw(RenderWindow &window) ;
 
 private:
+	MoodbarBuilder moodbar;
 	string path ;
 	SoundBuffer buffer ;
 	Sound sound ;

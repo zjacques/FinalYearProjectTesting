@@ -122,9 +122,11 @@
   <ItemGroup>
     <ClCompile Include="FFT.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="moodbarbuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FFT.h" />
+    <ClInclude Include="moodbarbuilder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
