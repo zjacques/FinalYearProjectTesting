@@ -7,6 +7,7 @@
 #include <valarray>
 #include <math.h>
 #include <numeric>
+#include <queue>
 #include "moodbarbuilder.h"
 
 const double PI = 3.141592653589793238460 ;
@@ -43,8 +44,16 @@ private:
 	SoundBuffer buffer ;
 	Sound sound ;
 
+	deque<double> livehistory;
+	int livebeats = 0;
+	float liveC = 1.3;
+	int lastBeats = 0;
+	int lastSecond = 0;
+	deque<double> bpshistory;
+
 	vector<Complex> sample ;
 	vector<float> window ;
+	vector<float> shortWindow;
 	CArray bin ;
 
 	VertexArray VA1 ;
