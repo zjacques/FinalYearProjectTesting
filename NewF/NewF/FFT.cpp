@@ -38,7 +38,7 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 
 	sample.resize(bufferSize) ;
 	VA1.resize(1000);
-	//beatDetect();
+	beatDetect();
 	//livehistory = deque<double>(sampleRate / (bufferSize/2), 0.0);
 	//waveForm();
 	//moodBar();
@@ -247,13 +247,13 @@ void FFT::beatDetect()
 			double instantEnergy = 0.0f; //variable e in the equations
 
 											//for each sample in window
-			for (float i = 1; i < bin2.size(); i++)
+			for (float i = 1; i < bassMax; i++)
 			{
 				float amplitude = abs(bin2[(int)i]);
 
 				instantEnergy += amplitude * amplitude;
-
 			}
+
 			//average of history
 			if (history.size() > 0)
 			{
@@ -262,32 +262,35 @@ void FFT::beatDetect()
 				E /= history.size();
 
 				double V = 0.0;
-				for (auto x : history)  V += (x-E);
+				for (auto x : history)  V += (x - E);
 
 				C = (-0.0025714*V) + 1.5142857;
-				//std::cout << "C" << C << "\n";
-				//double E = accumulate(history.begin(), history.end(), 0.0) / history.size();
-				//cout << "average " << E*C << endl;
-				//cout << "instant " << instantEnergy << endl;
-				if (instantEnergy > E*C)
+
+				if (instantEnergy > E*C && history.back() <= E * C)
 				{
 					beats++;
-					//beat!
+					//std::cout << "beat " << beats << "\n";
+					//std::cout << "threshold " << C << "\n";
+					//double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
+					//std::cout << "bpm " << floor(bpm) << "\n";
+
 				}
 			}
 			history.push_back(instantEnergy);
 			//if(history is too long(greater than 1 second should be)) then remove one from it
-			if (history.size() > sampleRate/(bufferSize))
+			if (history.size() > sampleRate/(bufferSize/4))
 			{
 				history.pop_front();
 			}
 			
-			startSample += (bufferSize);
+			startSample += (bufferSize/2);
 			
 		}
-
+		//cout << second << endl;
 	}
-	double bpm = beats / (buffer.getDuration().asSeconds()/60);
+	float duration = buffer.getDuration().asSeconds();
+	duration /= 60;
+	double bpm = (double)beats / (duration);
 	std::cout << "BPM is about : " << bpm << endl;
 }
 
@@ -315,7 +318,7 @@ void FFT::bars(float const& max)
 
 	double instantEnergy = 0.0f; //variable e in the equations
 								 //for each sample in window
-	for (float i = 1; i < 256; i++)
+	for (float i = 1; i < bassMax; i++)
 	{
 		float amplitude = abs(bin[(int)i]);
 
@@ -339,37 +342,41 @@ void FFT::bars(float const& max)
 		if (instantEnergy > E*liveC && livehistory.back() <= E * liveC)
 		{
 			livebeats++;
-			//std::cout << "beat " << livebeats << "\n";
-			//std::cout << "threshold " << liveC << "\n";
-			//double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
-			//std::cout << "bpm " << bpm << "\n";
+			std::cout << "beat " << livebeats << "\n";
+			std::cout << "threshold " << liveC << "\n";
+			cout << sound.getPlayingOffset().asSeconds() << endl;
+			double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
+			std::cout << "bpm " << floor(bpm) << "\n";
+			/*bpshistory.push_back(bpm);
+			for (auto x : bpshistory)  bpm += x;
+			bpm /= bpshistory.size();
+			std::cout << "bpm avg " << bpm << "\n";*/
 			//beat!
 		}
 	}
 	livehistory.push_back(instantEnergy);
 
 	//if(history is too long(greater than 1 second should be)) then remove one from it
-	if (livehistory.size() > sampleRate / (bufferSize/2))
+	if (livehistory.size() > sampleRate / (bufferSize/4))
 	{
 		livehistory.pop_front();
 	}
 
-	if (bpshistory.size() > 10)
+	/*if (bpshistory.size() > 100)
 	{
 		bpshistory.pop_front();
 	}
-
-	if ((int)sound.getPlayingOffset().asSeconds() > lastSecond)
+	*/
+	/*if ((int)sound.getPlayingOffset().asSeconds() > lastSecond)
 	{
 		double bps = (livebeats - lastBeats);
 		bpshistory.push_back(bps);
 		double bpm = 0;
-		for (auto x : bpshistory)  bpm += x;
 		bpm /= bpshistory.size();
 		std::cout << "bpm " << bpm*60 << "\n";
 		lastBeats = livebeats;
 		lastSecond = sound.getPlayingOffset().asSeconds();
-	}
+	}*/
 
 	VA2.setPrimitiveType(Lines) ;
 	Vector2f position(0,800) ;
