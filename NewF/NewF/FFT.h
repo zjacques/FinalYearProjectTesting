@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <fstream>
 #include <complex>
 #include <valarray>
 #include <math.h>
@@ -39,6 +40,8 @@ public:
 	void draw(RenderWindow &window) ;
 
 private:
+	ostringstream outputString;
+
 	MoodbarBuilder moodbar;
 	string path ;
 	SoundBuffer buffer ;
@@ -50,6 +53,11 @@ private:
 	int lastBeats = 0;
 	int lastSecond = 0;
 	deque<double> bpshistory;
+
+	queue<float> beatTimes;
+	map<float, unsigned int> m_beatHistory;
+
+	float getMostCommonBPM();
 
 	vector<Complex> sample ;
 	vector<float> window ;

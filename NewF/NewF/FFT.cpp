@@ -38,10 +38,16 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 
 	sample.resize(bufferSize) ;
 	VA1.resize(1000);
+	outputString << "{";
 	beatDetect();
 	//livehistory = deque<double>(sampleRate / (bufferSize/2), 0.0);
-	//waveForm();
-	//moodBar();
+	waveForm();
+	moodBar();
+	outputString << "}";
+	ofstream myfile;
+	myfile.open("test.txt");
+	myfile << outputString.str();
+	myfile.close();
 }
 
 //applies the window function to the buffer of samples (sample[])
@@ -67,15 +73,21 @@ void FFT::hammingWindow()
 //It's not pretty.
 void FFT::waveForm()
 {
+	outputString << ",\n\"m\":[";
 	for (int i = 0; i < 1000; i++)
 	{
 		//sample[i - mark] = Complex(buffer.getSamples()[i], 0);
 		float x = (float)i / (float)1000;
 		float n = x * (float)sampleCount;
 		Int16 sm = buffer.getSamples()[(int)n];
+		outputString << sm ;
+		if (i != 999)
+			outputString << ",\n";
 		VA1[i] = Vertex(Vector2f(20, 250) + Vector2f(i / (float)1000 * 700, sm*0.004), Color::Color(255, 0, 0, 255));
 		//VA1[mark] = Vertex(Vector2f(20, 250) + Vector2f((mark) / (float)bufferSize * 700, sample[mark].real()*0.005), Color::Color(255, 0, 0, 50));
 	}
+	outputString << "]\n";
+	cout << "wave made" << endl;
 }
 
 //The fft function I got from this code sample.
@@ -143,7 +155,7 @@ void FFT::moodBar()
 
 		//frequency?
 
-		float bassMax = 250 / barBand;//the last line that should be in the bass band
+		float bassMax = 200 / barBand;//the last line that should be in the bass band
 		float midMax = 5000 / barBand;//the last mid line
 		colourTriplet cols;
 		int redCount = 0;
@@ -179,23 +191,39 @@ void FFT::moodBar()
 		cols.blue /= blueCount;
 
 		colors.push_back(cols);
-		startSample += bufferSize/4;
+		//startSample += bufferSize/4;
+		startSample += bufferSize;
 	}
 
 	//draw the actual moodbar
-
+	outputString << ",\"colours\":[\n";
 	//issue is: there are far more bars in the higher bands than the bass, so it will always skew blue
 	for (float i = 0; i < colors.size(); i++) {
 		double maxVal = std::max(colors[i].red, colors[i].green);
 		maxVal = std::max(maxVal, colors[i].blue);
-		colors[i].red /= maxVal;
-		colors[i].green /= maxVal;
-		colors[i].blue /= maxVal;
+		if (maxVal == 0)
+		{
+			colors[i].red = maxVal;
+			colors[i].green = maxVal;
+			colors[i].blue = maxVal;
+		}
+		else
+		{
+			colors[i].red /= maxVal;
+			colors[i].green /= maxVal;
+			colors[i].blue /= maxVal;
+		}
 		//color should be normalized now? Skews Red now?
+		outputString << "{\"R\":" << colors[i].red << ",\"G\":" << colors[i].green << ",\"B\":" << colors[i].blue << "}";
+		if(i!=colors.size()-1)
+			outputString << ",\n";
 
 		VA4.append(Vertex(Vector2f((i/colors.size())*800 + 50, 400), Color(255/colors[(int)i].red, 255 / colors[(int)i].green, 255 / colors[(int)i].blue)));
 		VA4.append(Vertex(Vector2f((i/colors.size()) * 800 + 50, 500), Color(255 / colors[(int)i].red, 255 / colors[(int)i].green, 255 / colors[(int)i].blue)));
 	}
+	outputString << "]\n";
+	cout << "color samples" << colors.size() << endl;
+	cout << "moodbar made" << endl;
 
 }
 
@@ -243,7 +271,7 @@ void FFT::beatDetect()
 
 			//grab bass
 
-			float bassMax = 250 / barBand;//the last line that should be in the bass band
+			float bassMax = 200 / barBand;//the last line that should be in the bass band
 			double instantEnergy = 0.0f; //variable e in the equations
 
 											//for each sample in window
@@ -269,6 +297,15 @@ void FFT::beatDetect()
 				if (instantEnergy > E*C && history.back() <= E * C)
 				{
 					beats++;
+					double sthugg = ((double)currentSample / (double)sampleRate);
+					beatTimes.push( sthugg);
+					//std::cout << getMostCommonBPM() << std::endl;
+					auto gguhts = ((double)currentSample / (double)sampleRate) - beatTimes.front();
+					while (gguhts >= 1)
+					{
+						beatTimes.pop();
+						if (beatTimes.empty()) break;
+					}
 					//std::cout << "beat " << beats << "\n";
 					//std::cout << "threshold " << C << "\n";
 					//double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
@@ -282,16 +319,36 @@ void FFT::beatDetect()
 			{
 				history.pop_front();
 			}
+
+			if (beatTimes.size() >= 2)
+			{
+				double ms = (double)(beatTimes.back() - beatTimes.front()) / ((double)beatTimes.size() - 1);
+				double est = 60.0 / ms;
+				//float roundedEst = (float)(floor(est * 100.f) / 100.f);
+				float roundedEst = (float)(floor(est));
+				if (roundedEst > 200)
+					roundedEst /= 2;
+				//cout << roundedEst << endl;
+				if (m_beatHistory.find(roundedEst) != m_beatHistory.end())
+				{
+					++m_beatHistory[roundedEst];
+				}
+				else {
+					m_beatHistory.insert(make_pair(roundedEst, 1));
+				}
+			}
 			
 			startSample += (bufferSize/2);
 			
 		}
 		//cout << second << endl;
 	}
-	float duration = buffer.getDuration().asSeconds();
+	std::cout << "BPM is about : " << getMostCommonBPM() << std::endl;
+	outputString << "\"BPM\": " << getMostCommonBPM() << "\n";
+	/*float duration = buffer.getDuration().asSeconds();
 	duration /= 60;
 	double bpm = (double)beats / (duration);
-	std::cout << "BPM is about : " << bpm << endl;
+	std::cout << "BPM is about : " << bpm << endl;*/
 }
 
 void FFT::update()
@@ -313,7 +370,7 @@ void FFT::bars(float const& max)
 {
 	float b = bin.size();
 	float barBand = sampleRate / bin.size();
-	float bassMax = 250 / barBand;//the last line that should be in the bass band
+	float bassMax = 200 / barBand;//the last line that should be in the bass band
 	float midMax = 5000 / barBand;//the last mid line
 
 	double instantEnergy = 0.0f; //variable e in the equations
@@ -342,17 +399,49 @@ void FFT::bars(float const& max)
 		if (instantEnergy > E*liveC && livehistory.back() <= E * liveC)
 		{
 			livebeats++;
+
+			beatTimes.push(sound.getPlayingOffset().asMicroseconds());
+			std::cout << getMostCommonBPM() << std::endl;
+
+			while (sound.getPlayingOffset().asMicroseconds() - beatTimes.front() >= 1000000)
+			{
+				beatTimes.pop();
+				if (beatTimes.empty()) break;
+			}
 			std::cout << "beat " << livebeats << "\n";
-			std::cout << "threshold " << liveC << "\n";
-			cout << sound.getPlayingOffset().asSeconds() << endl;
-			double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
-			std::cout << "bpm " << floor(bpm) << "\n";
+			//std::cout << "threshold " << liveC << "\n";
+			//cout << sound.getPlayingOffset().asSeconds() << endl;
+			//double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
+			//std::cout << "bpm " << floor(bpm) << "\n";
 			/*bpshistory.push_back(bpm);
 			for (auto x : bpshistory)  bpm += x;
 			bpm /= bpshistory.size();
 			std::cout << "bpm avg " << bpm << "\n";*/
 			//beat!
 		}
+	}
+	if (beatTimes.size() >= 2)
+	{
+		double ms = (double)(beatTimes.back() - beatTimes.front()) / ((double)beatTimes.size() - 1);
+		double est = 60000000.0 / ms;
+		float roundedEst = (float)(floor(est * 100.f) / 100.f);
+		//cout << roundedEst << endl;
+		if (m_beatHistory.find(roundedEst) != m_beatHistory.end())
+		{
+			++m_beatHistory[roundedEst];
+		}
+		else {
+			m_beatHistory.insert(make_pair(roundedEst, 1));
+		}
+		/*if (m_beatHistory.find(roundedEst/2) != m_beatHistory.end())
+		{
+			//++m_beatHistory[roundedEst];
+			++m_beatHistory[roundedEst/2];
+		}
+		if (m_beatHistory.find(roundedEst*2) != m_beatHistory.end())
+		{
+			++m_beatHistory[roundedEst * 2];
+		}*/
 	}
 	livehistory.push_back(instantEnergy);
 
@@ -434,4 +523,21 @@ void FFT::draw(RenderWindow &window)
 	window.draw(VA2) ;
 
 	window.draw(VA4);
+}
+
+float FFT::getMostCommonBPM()
+{
+	/*return m_bpmEstimates[ subband ];*/
+	float bestGuessBpm = 0.f;
+	unsigned int highestCount = 0;
+	for (std::map< float, unsigned int >::const_iterator iter = m_beatHistory.begin(); iter != m_beatHistory.end(); ++iter)
+	{
+		if (iter->second > highestCount)
+		{
+			bestGuessBpm = iter->first;
+			highestCount = iter->second;
+		}
+	}
+
+	return bestGuessBpm;
 }

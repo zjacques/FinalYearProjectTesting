@@ -1,0 +1,5 @@
+﻿  main.cpp
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(44): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(61): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(18): warning C4101: 'bufferSize': unreferenced local variable
+  Demo.vcxproj -> C:\Users\gameuser\Documents\Citations\newF\NewF\Debug\Demo.exe
