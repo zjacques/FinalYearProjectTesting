@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <deque>
 #include "json.hpp"
 
 using namespace std;
@@ -36,6 +37,23 @@ int main()
 	float bpm = dat["BPM"];
 
 	vector<float> amps = dat["m"];
+	deque<float> wav;
+	for (int i = 0; i < 22; i++)
+	{
+		wav.push_back(0.f);
+	}
+	int lastAmp = -1;
+
+	VertexArray waveform;
+	waveform.setPrimitiveType(LineStrip);
+	waveform.resize(24);
+	waveform[0] = Vertex(Vector2f(20, 250), Color::Color(255, 0, 0, 255));
+	waveform[23] = Vertex(Vector2f(20 +(23/ (float)24 * 700), 250), Color::Color(255, 0, 0, 255));
+	for (int i = 1; i < 23; i++)
+	{
+		waveform[i] = Vertex(Vector2f(20+(i / (float)24 * 700), 250), Color::Color(255, 0, 0, 255));
+	}
+
 	auto cols = dat["colours"];
 	vector<Color> colours;
 	//for (int i = 0; i < dat["colours"].size(); i++)
@@ -45,6 +63,13 @@ int main()
 	}
 
 	Clock timer;
+
+	float beatsPerSecond = bpm / 60;
+	float beatTimes = 1 / beatsPerSecond;
+	float lastBeat = 0;
+	RectangleShape beatSquare;
+	beatSquare.setPosition(100, 400);
+	beatSquare.setSize(Vector2f(100, 100.f));
 
 	timer.restart();
 
@@ -56,12 +81,36 @@ int main()
 	while (timer.getElapsedTime() < song.getDuration())
 	{
 		while (window.pollEvent(event)) {}
-		float fraction = song.getPlayingOffset()/song.getDuration();
+		if (song.getPlayingOffset().asSeconds() > lastBeat + beatTimes)
+		{
+			cout << "BEAT" << endl;
+			beatSquare.setFillColor(Color::Color(255, 255, 255, 255));
+			lastBeat = song.getPlayingOffset().asSeconds();
+		}
+		else {
+			sf::Color col = beatSquare.getFillColor();
 
+			beatSquare.setFillColor(Color::Color(255, 255, 255, col.a*((song.getPlayingOffset().asSeconds()-lastBeat - beatTimes)/beatTimes)));
+		}
+
+		float fraction = song.getPlayingOffset()/song.getDuration();
+		if ((int)(fraction * 2000) != lastAmp)
+		{
+			lastAmp = fraction * 2000;
+			wav.push_back(amps[lastAmp]);
+			wav.pop_front();
+
+			for (int i = 1; i < 23; i++)
+			{
+				waveform[i] = Vertex(Vector2f(20 + (i / (float)24 * 700), 250+ wav[i-1] * 0.004), Color::Color(255, 0, 0, 255));
+			}
+		}
 		hue.setFillColor(colours[colours.size()*fraction]);
 
-		window.clear();
-		window.draw(hue);
+		window.clear();		
+		window.draw(hue); 
+		window.draw(beatSquare);
+		window.draw(waveform);
 		window.display();
 
 	}

@@ -1,45 +1,45 @@
 ﻿  FFT.cpp
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.h(52): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.h(53): warning C4305: 'initializing': truncation from 'double' to 'float'
 c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(18): warning C4244: '=': conversion from 'sf::Uint64' to 'int', possible loss of data
 c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(58): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(86): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(153): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(154): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(169): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(202): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(203): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(206): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(207): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(208): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(212): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(213): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(214): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(217): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(221): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(222): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(268): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(270): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(280): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(295): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(301): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(318): warning C4018: '>': signed/unsigned mismatch
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(371): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(372): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(380): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(394): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(403): warning C4244: 'argument': conversion from 'sf::Int64' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(449): warning C4018: '>': signed/unsigned mismatch
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(481): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(482): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(501): warning C4244: 'initializing': conversion from 'const double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(503): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(503): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(504): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(506): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(508): warning C4305: '*=': truncation from 'double' to 'float'
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(510): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(516): warning C4244: 'initializing': conversion from 'const double' to 'int', possible loss of data
-c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(516): warning C4018: '<': signed/unsigned mismatch
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(108): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(175): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(176): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(191): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(224): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(225): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(228): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(229): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(230): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(234): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(235): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(236): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(239): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(243): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(244): warning C4244: 'argument': conversion from 'double' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(290): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(292): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(302): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(317): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(323): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(340): warning C4018: '>': signed/unsigned mismatch
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(393): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(394): warning C4244: 'initializing': conversion from 'size_t' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(402): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(416): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(425): warning C4244: 'argument': conversion from 'sf::Int64' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(471): warning C4018: '>': signed/unsigned mismatch
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(503): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(504): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(523): warning C4244: 'initializing': conversion from 'const double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(525): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(525): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(526): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(528): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(530): warning C4305: '*=': truncation from 'double' to 'float'
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(532): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(538): warning C4244: 'initializing': conversion from 'const double' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\newf\newf\fft.cpp(538): warning C4018: '<': signed/unsigned mismatch
   NewF.vcxproj -> C:\Users\gameuser\Documents\Citations\newF\NewF\Debug\NewF.exe

@@ -37,7 +37,7 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 		//window.push_back(0.54-0.46*cos(2*PI*i/(float)bufferSize)) ;
 
 	sample.resize(bufferSize) ;
-	VA1.resize(1000);
+	VA1.resize(2000);
 	outputString << "{";
 	beatDetect();
 	//livehistory = deque<double>(sampleRate / (bufferSize/2), 0.0);
@@ -74,13 +74,35 @@ void FFT::hammingWindow()
 void FFT::waveForm()
 {
 	outputString << ",\n\"m\":[";
+	int lastmark = 1;
 	for (int i = 0; i < 1000; i++)
 	{
 		//sample[i - mark] = Complex(buffer.getSamples()[i], 0);
 		float x = (float)i / (float)1000;
 		float n = x * (float)sampleCount;
-		Int16 sm = buffer.getSamples()[(int)n];
-		outputString << sm ;
+		int max = 0;
+		int min = 0;
+		for (int j = lastmark; j < (int)n; j++)
+		{
+			if ((int)buffer.getSamples()[j] >= 0)
+				max += (int)buffer.getSamples()[j];
+			else
+				min += (int)buffer.getSamples()[j];
+			//max = std::max(max, (int)buffer.getSamples()[j]);
+			//min = std::min(min, (int)buffer.getSamples()[j]);
+			//avg += buffer.getSamples()[j];
+		}
+		Int16 sm = (int)buffer.getSamples()[i];
+		if (((int)n - lastmark) / 2 != 0)
+		{
+			max /= (((int)n - lastmark) / 2);
+			min /= ((((int)n - lastmark)) / 2);
+		}
+		else {
+			max = min = 0;
+		}
+		outputString << max << "," << min;
+		lastmark = (int)n;
 		if (i != 999)
 			outputString << ",\n";
 		VA1[i] = Vertex(Vector2f(20, 250) + Vector2f(i / (float)1000 * 700, sm*0.004), Color::Color(255, 0, 0, 255));

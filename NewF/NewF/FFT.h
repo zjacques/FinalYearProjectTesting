@@ -7,6 +7,7 @@
 #include <complex>
 #include <valarray>
 #include <math.h>
+#include <algorithm>
 #include <numeric>
 #include <queue>
 #include "moodbarbuilder.h"
