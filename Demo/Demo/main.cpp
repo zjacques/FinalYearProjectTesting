@@ -81,16 +81,16 @@ int main()
 	while (timer.getElapsedTime() < song.getDuration())
 	{
 		while (window.pollEvent(event)) {}
-		if (song.getPlayingOffset().asSeconds() > lastBeat + beatTimes)
+		float playoffset = song.getPlayingOffset().asSeconds();
+		if (playoffset >= lastBeat + beatTimes)
 		{
-			cout << "BEAT" << endl;
 			beatSquare.setFillColor(Color::Color(255, 255, 255, 255));
-			lastBeat = song.getPlayingOffset().asSeconds();
+			lastBeat = playoffset;
 		}
 		else {
 			sf::Color col = beatSquare.getFillColor();
-
-			beatSquare.setFillColor(Color::Color(255, 255, 255, col.a*((song.getPlayingOffset().asSeconds()-lastBeat - beatTimes)/beatTimes)));
+			float frac = ((playoffset - lastBeat)/beatTimes);
+			beatSquare.setFillColor(Color::Color(255, 255, 255, 255*(1-frac)));
 		}
 
 		float fraction = song.getPlayingOffset()/song.getDuration();
