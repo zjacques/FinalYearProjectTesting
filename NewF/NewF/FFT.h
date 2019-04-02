@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <numeric>
 #include <queue>
+#include "dr_flac.h"
 #include "moodbarbuilder.h"
 
 const double PI = 3.141592653589793238460 ;
@@ -32,7 +33,6 @@ public:
 	void moodBar();
 
 	void beatDetect();
-
 	void update() ;
 
 	void bars(float const& max) ;

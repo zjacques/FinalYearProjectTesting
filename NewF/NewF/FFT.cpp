@@ -5,6 +5,8 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 	path = _path ;
 	if(!buffer.loadFromFile(path)) std::cout<<"Unable to load buffer"<<endl ;
 
+	drflac file;
+
 	sound.setBuffer(buffer) ;
 	sound.setLoop(true);
 	sound.play();
