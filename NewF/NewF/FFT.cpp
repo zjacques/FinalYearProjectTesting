@@ -384,7 +384,7 @@ void FFT::update()
 
 	bin = CArray(sample.data(),bufferSize) ;
 	fft(bin) ;
-	float max = 100000000 ;
+	float max = 100000000;
 	
 	//lines(max) ;
 	bars(max);

@@ -125,6 +125,7 @@
     <ClCompile Include="moodbarbuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dr_flac.h" />
     <ClInclude Include="FFT.h" />
     <ClInclude Include="moodbarbuilder.h" />
   </ItemGroup>

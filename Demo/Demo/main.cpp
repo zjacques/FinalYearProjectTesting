@@ -48,10 +48,10 @@ int main()
 	waveform.setPrimitiveType(LineStrip);
 	waveform.resize(24);
 	waveform[0] = Vertex(Vector2f(20, 250), Color::Color(255, 0, 0, 255));
-	waveform[23] = Vertex(Vector2f(20 +(23/ (float)24 * 700), 250), Color::Color(255, 0, 0, 255));
+	waveform[23] = Vertex(Vector2f(20 +(23/ (float)24 * 500), 250), Color::Color(255, 0, 0, 255));
 	for (int i = 1; i < 23; i++)
 	{
-		waveform[i] = Vertex(Vector2f(20+(i / (float)24 * 700), 250), Color::Color(255, 0, 0, 255));
+		waveform[i] = Vertex(Vector2f(20+(i / (float)24 * 500), 250), Color::Color(255, 0, 0, 255));
 	}
 
 	auto cols = dat["colours"];
@@ -90,10 +90,12 @@ int main()
 		else {
 			sf::Color col = beatSquare.getFillColor();
 			float frac = ((playoffset - lastBeat)/beatTimes);
+			if (frac > 1) frac = 1;
 			beatSquare.setFillColor(Color::Color(255, 255, 255, 255*(1-frac)));
 		}
 
 		float fraction = song.getPlayingOffset()/song.getDuration();
+		if (fraction > 1) fraction = 1;
 		if ((int)(fraction * 2000) != lastAmp)
 		{
 			lastAmp = fraction * 2000;
@@ -102,7 +104,7 @@ int main()
 
 			for (int i = 1; i < 23; i++)
 			{
-				waveform[i] = Vertex(Vector2f(20 + (i / (float)24 * 700), 250+ wav[i-1] * 0.004), Color::Color(255, 0, 0, 255));
+				waveform[i] = Vertex(Vector2f(20 + (i / (float)24 * 500), 250+ wav[i-1] * 0.004), Color::Color(255, 0, 0, 255));
 			}
 		}
 		hue.setFillColor(colours[colours.size()*fraction]);

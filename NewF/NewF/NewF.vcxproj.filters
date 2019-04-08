@@ -32,5 +32,8 @@
     <ClInclude Include="moodbarbuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dr_flac.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
