@@ -16,7 +16,6 @@ int main()
 
 	string path;
 	string mapPath;
-	int bufferSize;
 	cout << "Put an audio file in the Ressources folder (.wav will work, mp3 wont)" << endl;
 	cout << "Enter the file name (example.wav) : ";
 	cin >> path;	
@@ -27,7 +26,7 @@ int main()
 	stringstream ss;
 	Music song;
 
-	song.openFromFile(path);
+	song.openFromFile("Ressources/" + path);
 	audioData.open(mapPath);
 	json dat;
 	ss << audioData.rdbuf();
@@ -38,20 +37,21 @@ int main()
 
 	vector<float> amps = dat["m"];
 	deque<float> wav;
-	for (int i = 0; i < 22; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		wav.push_back(0.f);
 	}
 	int lastAmp = -1;
 
+	int numpoints = amps.size();
 	VertexArray waveform;
 	waveform.setPrimitiveType(LineStrip);
-	waveform.resize(24);
+	waveform.resize(50);
 	waveform[0] = Vertex(Vector2f(20, 250), Color::Color(255, 0, 0, 255));
-	waveform[23] = Vertex(Vector2f(20 +(23/ (float)24 * 500), 250), Color::Color(255, 0, 0, 255));
-	for (int i = 1; i < 23; i++)
+	waveform[49] = Vertex(Vector2f(20 +(49 / (float)50 * 880), 250), Color::Color(255, 0, 0, 255));
+	for (int i = 1; i < 49; i++)
 	{
-		waveform[i] = Vertex(Vector2f(20+(i / (float)24 * 500), 250), Color::Color(255, 0, 0, 255));
+		waveform[i] = Vertex(Vector2f(20+(i / (float)50 * 880), 250), Color::Color(255, 0, 0, 255));
 	}
 
 	auto cols = dat["colours"];
@@ -71,6 +71,22 @@ int main()
 	beatSquare.setPosition(100, 400);
 	beatSquare.setSize(Vector2f(100, 100.f));
 
+	//colour bars
+	RectangleShape redBar;
+	RectangleShape greenBar;
+	RectangleShape blueBar;
+	redBar.setPosition(0,900);
+	redBar.setSize(Vector2f(300.f, 00.f));
+	redBar.setFillColor(Color::Red);
+	greenBar.setPosition(300, 900);
+	greenBar.setSize(Vector2f(300.f, 00.f));
+	greenBar.setFillColor(Color::Green);
+	blueBar.setPosition(600, 900);
+	blueBar.setSize(Vector2f(300.f, 00.f));
+	blueBar.setFillColor(Color::Blue);
+
+
+	//begin replay
 	timer.restart();
 
 	song.play();
@@ -88,7 +104,7 @@ int main()
 			lastBeat = playoffset;
 		}
 		else {
-			sf::Color col = beatSquare.getFillColor();
+			//sf::Color col = beatSquare.getFillColor();
 			float frac = ((playoffset - lastBeat)/beatTimes);
 			if (frac > 1) frac = 1;
 			beatSquare.setFillColor(Color::Color(255, 255, 255, 255*(1-frac)));
@@ -96,23 +112,29 @@ int main()
 
 		float fraction = song.getPlayingOffset()/song.getDuration();
 		if (fraction > 1) fraction = 1;
-		if ((int)(fraction * 2000) != lastAmp)
+		if ((int)(fraction * numpoints) != lastAmp)
 		{
-			lastAmp = fraction * 2000;
+			lastAmp = fraction * numpoints;
 			wav.push_back(amps[lastAmp]);
 			wav.pop_front();
 
-			for (int i = 1; i < 23; i++)
+			for (int i = 1; i < 49; i++)
 			{
-				waveform[i] = Vertex(Vector2f(20 + (i / (float)24 * 500), 250+ wav[i-1] * 0.004), Color::Color(255, 0, 0, 255));
+				waveform[i] = Vertex(Vector2f(20 + (i / (float)50 * 880), 250+ wav[i-1] * 0.004), Color::Color(255, 0, 0, 255));
 			}
 		}
 		hue.setFillColor(colours[colours.size()*fraction]);
+		redBar.setSize(Vector2f(300, -colours[colours.size()*fraction].r));
+		greenBar.setSize(Vector2f(300, -colours[colours.size()*fraction].g));
+		blueBar.setSize(Vector2f(300, -colours[colours.size()*fraction].b));
 
-		window.clear();		
+		window.clear();
 		window.draw(hue); 
 		window.draw(beatSquare);
 		window.draw(waveform);
+		window.draw(redBar);
+		window.draw(greenBar);
+		window.draw(blueBar);
 		window.display();
 
 	}

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NewF", "NewF\NewF.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "..\Demo\Demo\Demo.vcxproj", "{C113BEBB-E336-4A88-847E-E46109A0C01D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CyberpunchDemo", "..\CyberpunchDemo\CyberpunchDemo.vcxproj", "{7718A837-401B-4C22-8139-4A40EB01CD8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{C113BEBB-E336-4A88-847E-E46109A0C01D}.Release|x64.Build.0 = Release|x64
 		{C113BEBB-E336-4A88-847E-E46109A0C01D}.Release|x86.ActiveCfg = Release|Win32
 		{C113BEBB-E336-4A88-847E-E46109A0C01D}.Release|x86.Build.0 = Release|Win32
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Debug|x64.ActiveCfg = Debug|x64
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Debug|x64.Build.0 = Debug|x64
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Debug|x86.ActiveCfg = Debug|Win32
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Debug|x86.Build.0 = Debug|Win32
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Release|x64.ActiveCfg = Release|x64
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Release|x64.Build.0 = Release|x64
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Release|x86.ActiveCfg = Release|Win32
+		{7718A837-401B-4C22-8139-4A40EB01CD8D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

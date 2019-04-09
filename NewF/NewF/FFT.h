@@ -6,10 +6,11 @@
 #include <fstream>
 #include <complex>
 #include <valarray>
-#include <math.h>
 #include <algorithm>
 #include <numeric>
 #include <queue>
+#include <math.h>        
+#include <thread> 
 #include "dr_flac.h"
 #include "moodbarbuilder.h"
 
@@ -30,6 +31,10 @@ public:
 	void waveForm();
 	void fft(CArray &x) ;
 
+	void beginString();
+	void endString();
+	void printToFile();
+
 	void moodBar();
 
 	void beatDetect();
@@ -41,7 +46,14 @@ public:
 	void draw(RenderWindow &window) ;
 
 private:
+
+
 	ostringstream outputString;
+	ostringstream bmpStream;
+	ostringstream waveStream;
+	ostringstream colStream;
+
+	std::string songname;
 
 	MoodbarBuilder moodbar;
 	string path ;

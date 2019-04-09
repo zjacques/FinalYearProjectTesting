@@ -4,12 +4,13 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 {
 	path = _path ;
 	if(!buffer.loadFromFile(path)) std::cout<<"Unable to load buffer"<<endl ;
-
+	songname = path.substr(0, path.find("."));
+	songname = songname.substr(songname.find("/")+1);
 	drflac file;
 
-	sound.setBuffer(buffer) ;
-	sound.setLoop(true);
-	sound.play();
+	//sound.setBuffer(buffer) ;
+	//sound.setLoop(true);
+	//sound.play();
 
 	VA1.setPrimitiveType(LineStrip) ;
 	VA2.setPrimitiveType(Lines) ;
@@ -40,16 +41,18 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 
 	sample.resize(bufferSize) ;
 	VA1.resize(2000);
-	outputString << "{";
-	beatDetect();
-	//livehistory = deque<double>(sampleRate / (bufferSize/2), 0.0);
+	//outputString << "{";
+
+	/*beatDetect();
 	waveForm();
-	moodBar();
-	outputString << "}";
-	ofstream myfile;
-	myfile.open("test.txt");
+	moodBar();*/
+
+
+	//outputString << "}";
+	/*ofstream myfile;
+	myfile.open(songname+".txt");
 	myfile << outputString.str();
-	myfile.close();
+	myfile.close();*/
 }
 
 //applies the window function to the buffer of samples (sample[])
@@ -75,12 +78,16 @@ void FFT::hammingWindow()
 //It's not pretty.
 void FFT::waveForm()
 {
-	outputString << ",\n\"m\":[";
+	waveStream << ",\n\"m\":[";
 	int lastmark = 1;
-	for (int i = 0; i < 1000; i++)
+	//while (currentSample < sampleCount-(bufferSize / 2))
+	//{
+	//for (int i = 0; i < 1000; i++)
+	int numpoints = sampleCount / bufferSize;
+	for (int i = 0; i < numpoints; i++)
 	{
 		//sample[i - mark] = Complex(buffer.getSamples()[i], 0);
-		float x = (float)i / (float)1000;
+		float x = (float)i / (float)numpoints;
 		float n = x * (float)sampleCount;
 		int max = 0;
 		int min = 0;
@@ -103,15 +110,15 @@ void FFT::waveForm()
 		else {
 			max = min = 0;
 		}
-		outputString << max << "," << min;
+		waveStream << max << "," << min;
 		lastmark = (int)n;
-		if (i != 999)
-			outputString << ",\n";
-		VA1[i] = Vertex(Vector2f(20, 250) + Vector2f(i / (float)1000 * 700, sm*0.004), Color::Color(255, 0, 0, 255));
+		if (i != (numpoints-1))
+			waveStream << ",\n";
+		//VA1[i] = Vertex(Vector2f(20, 250) + Vector2f(i / (float)numpoints * 700, sm*0.004), Color::Color(255, 0, 0, 255));
 		//VA1[mark] = Vertex(Vector2f(20, 250) + Vector2f((mark) / (float)bufferSize * 700, sample[mark].real()*0.005), Color::Color(255, 0, 0, 50));
 	}
-	outputString << "]\n";
-	cout << "wave made" << endl;
+	waveStream << "]\n";
+	std::cout << "wave made" << std::endl;
 }
 
 //The fft function I got from this code sample.
@@ -134,6 +141,28 @@ void FFT::fft(CArray &x)
 		x[k] = even[k] + t;
 		x[k+N/2] = even[k] - t;
 	}
+}
+
+void FFT::beginString()
+{
+	outputString.clear(); 
+	outputString << "{";
+}
+
+void FFT::endString()
+{
+	outputString << bmpStream.str();
+	outputString << waveStream.str();
+	outputString << colStream.str();
+	outputString << "}";
+}
+
+void FFT::printToFile()
+{
+	ofstream myfile;
+	myfile.open(songname + ".txt");
+	myfile << outputString.str();
+	myfile.close();
 }
 
 //Does the whole window-ham-fft process over the whole song
@@ -220,7 +249,7 @@ void FFT::moodBar()
 	}
 
 	//draw the actual moodbar
-	outputString << ",\"colours\":[\n";
+	waveStream << ",\"colours\":[\n";
 	//issue is: there are far more bars in the higher bands than the bass, so it will always skew blue
 	for (float i = 0; i < colors.size(); i++) {
 		double maxVal = std::max(colors[i].red, colors[i].green);
@@ -238,16 +267,16 @@ void FFT::moodBar()
 			colors[i].blue /= maxVal;
 		}
 		//color should be normalized now? Skews Red now?
-		outputString << "{\"R\":" << colors[i].red << ",\"G\":" << colors[i].green << ",\"B\":" << colors[i].blue << "}";
+		waveStream << "{\"R\":" << colors[i].red << ",\"G\":" << colors[i].green << ",\"B\":" << colors[i].blue << "}";
 		if(i!=colors.size()-1)
-			outputString << ",\n";
+			waveStream << ",\n";
 
 		VA4.append(Vertex(Vector2f((i/colors.size())*800 + 50, 400), Color(255/colors[(int)i].red, 255 / colors[(int)i].green, 255 / colors[(int)i].blue)));
 		VA4.append(Vertex(Vector2f((i/colors.size()) * 800 + 50, 500), Color(255 / colors[(int)i].red, 255 / colors[(int)i].green, 255 / colors[(int)i].blue)));
 	}
-	outputString << "]\n";
-	cout << "color samples" << colors.size() << endl;
-	cout << "moodbar made" << endl;
+	waveStream << "]\n";
+	std::cout << "color samples" << colors.size() << endl;
+	std::cout << "moodbar made" << endl;
 
 }
 
@@ -368,7 +397,7 @@ void FFT::beatDetect()
 		//cout << second << endl;
 	}
 	std::cout << "BPM is about : " << getMostCommonBPM() << std::endl;
-	outputString << "\"BPM\": " << getMostCommonBPM() << "\n";
+	bmpStream << "\"BPM\": " << getMostCommonBPM() << "\n";
 	/*float duration = buffer.getDuration().asSeconds();
 	duration /= 60;
 	double bpm = (double)beats / (duration);
