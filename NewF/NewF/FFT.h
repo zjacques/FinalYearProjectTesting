@@ -12,7 +12,6 @@
 #include <math.h>        
 #include <thread> 
 #include "dr_flac.h"
-#include "moodbarbuilder.h"
 
 const double PI = 3.141592653589793238460 ;
 
@@ -38,12 +37,8 @@ public:
 	void moodBar();
 
 	void beatDetect();
-	void update() ;
 
-	void bars(float const& max) ;
-	void lines(float const& max) ;
 
-	void draw(RenderWindow &window) ;
 
 private:
 
@@ -55,7 +50,6 @@ private:
 
 	std::string songname;
 
-	MoodbarBuilder moodbar;
 	string path ;
 	SoundBuffer buffer ;
 	Sound sound ;
@@ -76,12 +70,6 @@ private:
 	vector<float> window ;
 	vector<float> shortWindow;
 	CArray bin ;
-
-	VertexArray VA1 ;
-	VertexArray VA2 ;
-	VertexArray VA3 ;
-	VertexArray VA4;
-	vector<Vertex> cascade ;
 	
 	int sampleRate ;
 	int sampleCount ;

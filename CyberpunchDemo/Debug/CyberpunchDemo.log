@@ -1,0 +1,10 @@
+﻿  main.cpp
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(107): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(138): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(145): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(151): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(152): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(154): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(155): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\cyberpunchdemo\main.cpp(160): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+  CyberpunchDemo.vcxproj -> C:\Users\gameuser\Documents\Citations\newF\NewF\Debug\CyberpunchDemo.exe

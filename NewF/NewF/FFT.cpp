@@ -7,15 +7,6 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 	songname = path.substr(0, path.find("."));
 	songname = songname.substr(songname.find("/")+1);
 	drflac file;
-
-	//sound.setBuffer(buffer) ;
-	//sound.setLoop(true);
-	//sound.play();
-
-	VA1.setPrimitiveType(LineStrip) ;
-	VA2.setPrimitiveType(Lines) ;
-	VA3.setPrimitiveType(LineStrip) ;
-	VA4.setPrimitiveType(Lines);
 	int channels = buffer.getChannelCount();
 	sampleRate = buffer.getSampleRate()*buffer.getChannelCount() ;
 	sampleCount = buffer.getSampleCount() ;
@@ -40,19 +31,6 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 		//window.push_back(0.54-0.46*cos(2*PI*i/(float)bufferSize)) ;
 
 	sample.resize(bufferSize) ;
-	VA1.resize(2000);
-	//outputString << "{";
-
-	/*beatDetect();
-	waveForm();
-	moodBar();*/
-
-
-	//outputString << "}";
-	/*ofstream myfile;
-	myfile.open(songname+".txt");
-	myfile << outputString.str();
-	myfile.close();*/
 }
 
 //applies the window function to the buffer of samples (sample[])
@@ -270,9 +248,6 @@ void FFT::moodBar()
 		waveStream << "{\"R\":" << colors[i].red << ",\"G\":" << colors[i].green << ",\"B\":" << colors[i].blue << "}";
 		if(i!=colors.size()-1)
 			waveStream << ",\n";
-
-		VA4.append(Vertex(Vector2f((i/colors.size())*800 + 50, 400), Color(255/colors[(int)i].red, 255 / colors[(int)i].green, 255 / colors[(int)i].blue)));
-		VA4.append(Vertex(Vector2f((i/colors.size()) * 800 + 50, 500), Color(255 / colors[(int)i].red, 255 / colors[(int)i].green, 255 / colors[(int)i].blue)));
 	}
 	waveStream << "]\n";
 	std::cout << "color samples" << colors.size() << endl;
@@ -402,180 +377,6 @@ void FFT::beatDetect()
 	duration /= 60;
 	double bpm = (double)beats / (duration);
 	std::cout << "BPM is about : " << bpm << endl;*/
-}
-
-void FFT::update()
-{
-	hammingWindow();
-
-	VA2.clear() ;
-	//VA3.clear() ;
-
-	bin = CArray(sample.data(),bufferSize) ;
-	fft(bin) ;
-	float max = 100000000;
-	
-	//lines(max) ;
-	bars(max);
-}
-
-void FFT::bars(float const& max)
-{
-	float b = bin.size();
-	float barBand = sampleRate / bin.size();
-	float bassMax = 200 / barBand;//the last line that should be in the bass band
-	float midMax = 5000 / barBand;//the last mid line
-
-	double instantEnergy = 0.0f; //variable e in the equations
-								 //for each sample in window
-	for (float i = 1; i < bassMax; i++)
-	{
-		float amplitude = abs(bin[(int)i]);
-
-		instantEnergy += amplitude * amplitude;
-	}
-	//average of history
-	if (livehistory.size() > 0)
-	{
-		double E = 0.0;
-		for (auto x : livehistory)  E += x;
-		E /= livehistory.size();
-
-		double V = 0.0;
-		for (auto x : livehistory)  V += (x - E);
-
-		liveC = (-0.0025714*V) + 1.5142857;
-		//std::cout << "C" << C << "\n";
-		//double E = accumulate(history.begin(), history.end(), 0.0) / history.size();
-		//cout << "average " << E*C << endl;
-		//cout << "instant " << instantEnergy << endl;
-		if (instantEnergy > E*liveC && livehistory.back() <= E * liveC)
-		{
-			livebeats++;
-
-			beatTimes.push(sound.getPlayingOffset().asMicroseconds());
-			std::cout << getMostCommonBPM() << std::endl;
-
-			while (sound.getPlayingOffset().asMicroseconds() - beatTimes.front() >= 1000000)
-			{
-				beatTimes.pop();
-				if (beatTimes.empty()) break;
-			}
-			std::cout << "beat " << livebeats << "\n";
-			//std::cout << "threshold " << liveC << "\n";
-			//cout << sound.getPlayingOffset().asSeconds() << endl;
-			//double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
-			//std::cout << "bpm " << floor(bpm) << "\n";
-			/*bpshistory.push_back(bpm);
-			for (auto x : bpshistory)  bpm += x;
-			bpm /= bpshistory.size();
-			std::cout << "bpm avg " << bpm << "\n";*/
-			//beat!
-		}
-	}
-	if (beatTimes.size() >= 2)
-	{
-		double ms = (double)(beatTimes.back() - beatTimes.front()) / ((double)beatTimes.size() - 1);
-		double est = 60000000.0 / ms;
-		float roundedEst = (float)(floor(est * 100.f) / 100.f);
-		//cout << roundedEst << endl;
-		if (m_beatHistory.find(roundedEst) != m_beatHistory.end())
-		{
-			++m_beatHistory[roundedEst];
-		}
-		else {
-			m_beatHistory.insert(make_pair(roundedEst, 1));
-		}
-		/*if (m_beatHistory.find(roundedEst/2) != m_beatHistory.end())
-		{
-			//++m_beatHistory[roundedEst];
-			++m_beatHistory[roundedEst/2];
-		}
-		if (m_beatHistory.find(roundedEst*2) != m_beatHistory.end())
-		{
-			++m_beatHistory[roundedEst * 2];
-		}*/
-	}
-	livehistory.push_back(instantEnergy);
-
-	//if(history is too long(greater than 1 second should be)) then remove one from it
-	if (livehistory.size() > sampleRate / (bufferSize/4))
-	{
-		livehistory.pop_front();
-	}
-
-	/*if (bpshistory.size() > 100)
-	{
-		bpshistory.pop_front();
-	}
-	*/
-	/*if ((int)sound.getPlayingOffset().asSeconds() > lastSecond)
-	{
-		double bps = (livebeats - lastBeats);
-		bpshistory.push_back(bps);
-		double bpm = 0;
-		bpm /= bpshistory.size();
-		std::cout << "bpm " << bpm*60 << "\n";
-		lastBeats = livebeats;
-		lastSecond = sound.getPlayingOffset().asSeconds();
-	}*/
-
-	VA2.setPrimitiveType(Lines) ;
-	Vector2f position(0,800) ;
-	//sampleRate
-	//Bass = 0-250hz, mid = 251-5khz, treble = 5k-20k
-	//width of bin bar = samplerate/lengthOfBin
-
-	//treble max is just the max
-	sf::Color linecolor = sf::Color::Red;
-
-	for(float i = 3 ; i < min(bufferSize/2.f,20000.f) ; i++)
-	{
-		int l = abs(bin[(int)i]);
-		Vector2f samplePosition(log(i)/log(min(bufferSize/2.f,20000.f)),abs(bin[(int)i]));
-
-		if(i>bassMax)
-			linecolor = sf::Color::Green;
-		if (i > midMax)
-			linecolor = sf::Color::Blue;
-		VA2.append(Vertex(position+Vector2f(samplePosition.x*800,-samplePosition.y/max*500), linecolor));
-		VA2.append(Vertex(position+Vector2f(samplePosition.x*800,0),Color::White));
-		//VA2.append(Vertex(position+Vector2f(samplePosition.x*800,0),Color::Color(255,255,255,100)));
-		//VA2.append(Vertex(position+Vector2f(samplePosition.x*800,samplePosition.y/max*500/2.f),Color::Color(255,255,255,0)));
-	}
-}
-void FFT::lines(float const& max)
-{
-	VA3.setPrimitiveType(LineStrip) ;
-	Vector2f position(0,800) ;
-	Vector2f samplePosition ;
-	float colorDecay = 1 ;
-	
-	for(float i(std::max((double)0,cascade.size()-3e5)) ; i < cascade.size() ; i++)
-	{
-		cascade[i].position -= Vector2f(-0.8,1) ;
-		if(cascade[i].color.a != 0) cascade[i].color = Color(255,255,255,20) ;
-	}
-	samplePosition = Vector2f(log(3)/log(min(bufferSize/2.f,20000.f)),abs(bin[(int)3])) ;
-	cascade.push_back(Vertex(position+Vector2f(samplePosition.x*800,-samplePosition.y/max*500),Color::Transparent)) ;
-	for(float i(3) ; i < bufferSize/2.f ; i*=1.02)
-	{
-		samplePosition = Vector2f(log(i)/log(min(bufferSize/2.f,20000.f)),abs(bin[(int)i])) ;
-		cascade.push_back(Vertex(position+Vector2f(samplePosition.x*800,-samplePosition.y/max*500),Color::Color(255,255,255,20))) ;
-	}
-	cascade.push_back(Vertex(position+Vector2f(samplePosition.x*800,-samplePosition.y/max*500),Color::Transparent)) ;
-
-	VA3.clear() ;
-	for(int i(std::max((double)0,cascade.size()-3e5)) ; i < cascade.size() ; i++) VA3.append(cascade[i]) ;
-}
-
-void FFT::draw(RenderWindow &window)
-{
-	window.draw(VA1) ;
-	//window.draw(VA3) ;
-	window.draw(VA2) ;
-
-	window.draw(VA4);
 }
 
 float FFT::getMostCommonBPM()

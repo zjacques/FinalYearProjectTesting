@@ -10,6 +10,8 @@ using namespace std;
 using namespace sf;
 using json = nlohmann::json;
 
+int wavelength = 32;
+
 int main()
 {
 	RenderWindow window(VideoMode(1920, 1080, 32), "Window");
@@ -21,12 +23,35 @@ int main()
 	cin >> path;
 	/*cout << "Enter the data file name (example.txt) : ";
 	cin >> mapPath;*/
+	mapPath = path.substr(0, path.find("."));
+	mapPath += ".txt";
 
-	sf::Texture texture;
-	if (!texture.loadFromFile("Ressources/BG.png"))
+	sf::Texture bgTex;
+	if (!bgTex.loadFromFile("Ressources/1.png"))
 	{
 		// error...
 	}
+	bgTex.setSmooth(true);
+	Sprite bgSprite;
+	bgSprite.setTexture(bgTex);
+
+	sf::Texture sunTex;
+	if (!sunTex.loadFromFile("Ressources/sun.png"))
+	{
+		// error...
+	}
+	sunTex.setSmooth(true);
+	Sprite sunSprite;
+	sunSprite.setTexture(sunTex);	
+	
+	sf::Texture fgTex;
+	if (!fgTex.loadFromFile("Ressources/fg.png"))
+	{
+		// error...
+	}
+	fgTex.setSmooth(true);
+	Sprite fgSprite;
+	fgSprite.setTexture(fgTex);
 
 	ifstream audioData;
 	stringstream ss;
@@ -43,7 +68,7 @@ int main()
 
 	vector<float> amps = dat["m"];
 	deque<float> wav;
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < wavelength; i++)
 	{
 		wav.push_back(0.f);
 	}
@@ -51,13 +76,27 @@ int main()
 
 	int numpoints = amps.size();
 	VertexArray waveform;
-	waveform.setPrimitiveType(LineStrip);
-	waveform.resize(50);
-	waveform[0] = Vertex(Vector2f(20, 250), Color::Color(255, 0, 0, 255));
-	waveform[49] = Vertex(Vector2f(20 + (49 / (float)50 * 880), 250), Color::Color(255, 0, 0, 255));
-	for (int i = 1; i < 49; i++)
+	waveform.setPrimitiveType(TriangleStrip);
+	waveform.resize(wavelength*2);
+	waveform[0] = Vertex(Vector2f(1 / (float)wavelength * 960, 685), Color::Color(255, 0, 255, 255));
+	waveform[1] = Vertex(Vector2f(1 / (float)wavelength * 960, 690), Color::Color(255, 0, 255, 255));
+	for (int i = 2; i < wavelength*2; i+=2)
 	{
-		waveform[i] = Vertex(Vector2f(20 + (i / (float)50 * 880), 250), Color::Color(255, 0, 0, 255));
+		waveform[i] = Vertex(Vector2f(0 + (i/2 / (float)wavelength * 960), 685), Color::Color(255, 0, 255, 255));
+		waveform[i+1] = Vertex(Vector2f(0 + (i / (float)wavelength * 960), 690), Color::Color(255, 0, 255, 255));
+	}
+
+	VertexArray waveform2;
+	waveform2.setPrimitiveType(TriangleStrip);
+	waveform2.resize(wavelength * 2);
+	waveform2[0] = Vertex(Vector2f(1920- 1 / (float)wavelength * 960, 685), Color::Color(255, 0, 255, 255));
+	waveform2[1] = Vertex(Vector2f(1920- 1 / (float)wavelength * 960, 690), Color::Color(255, 0, 255, 255));
+	for (int i = 2; i < wavelength * 2; i += 2)
+	{
+		/*if (i / 2 == 1)
+			cout << "bleh";*/
+		waveform2[i] = Vertex(Vector2f(1920 - (i/2 / (float)wavelength * 960), 685), Color::Color(255, 0, 255, 255));
+		waveform2[i + 1] = Vertex(Vector2f(1920 - (i/2 / (float)wavelength * 960), 690), Color::Color(255, 0, 255, 255));
 	}
 
 	auto cols = dat["colours"];
@@ -77,28 +116,12 @@ int main()
 	beatSquare.setPosition(100, 400);
 	beatSquare.setSize(Vector2f(100, 100.f));
 
-	//colour bars
-	RectangleShape redBar;
-	RectangleShape greenBar;
-	RectangleShape blueBar;
-	redBar.setPosition(0, 900);
-	redBar.setSize(Vector2f(300.f, 00.f));
-	redBar.setFillColor(Color::Red);
-	greenBar.setPosition(300, 900);
-	greenBar.setSize(Vector2f(300.f, 00.f));
-	greenBar.setFillColor(Color::Green);
-	blueBar.setPosition(600, 900);
-	blueBar.setSize(Vector2f(300.f, 00.f));
-	blueBar.setFillColor(Color::Blue);
 
 
 	//begin replay
 	timer.restart();
 
 	song.play();
-	RectangleShape hue;
-	hue.setPosition(0, 0);
-	hue.setSize(Vector2f(900.f, 100.f));
 	Event event;
 	while (timer.getElapsedTime() < song.getDuration())
 	{
@@ -106,14 +129,13 @@ int main()
 		float playoffset = song.getPlayingOffset().asSeconds();
 		if (playoffset >= lastBeat + beatTimes)
 		{
-			beatSquare.setFillColor(Color::Color(255, 255, 255, 255));
+			sunSprite.setColor(Color::Color(255, 255, 255, 255));
 			lastBeat = playoffset;
 		}
 		else {
-			//sf::Color col = beatSquare.getFillColor();
 			float frac = ((playoffset - lastBeat) / beatTimes);
 			if (frac > 1) frac = 1;
-			beatSquare.setFillColor(Color::Color(255, 255, 255, 255 * (1 - frac)));
+			sunSprite.setColor(Color::Color(255, 255, 255, 255 * max((1 - frac),0.25f)));
 		}
 
 		float fraction = song.getPlayingOffset() / song.getDuration();
@@ -124,23 +146,26 @@ int main()
 			wav.push_back(amps[lastAmp]);
 			wav.pop_front();
 
-			for (int i = 1; i < 49; i++)
+			for (int i = 2; i < wavelength*2; i+=2)
 			{
-				waveform[i] = Vertex(Vector2f(20 + (i / (float)50 * 880), 250 + wav[i - 1] * 0.004), Color::Color(255, 0, 0, 255));
+				waveform[i] = Vertex(Vector2f(0 + ((i+2)/2 / (float)wavelength * 960), 685 + wav[i/2 - 1] * 0.008), Color::Color(255, 0, 255, 255));
+				waveform[i+1] = Vertex(Vector2f(0 + ((i + 2) /2 / (float)wavelength * 960), 690 + wav[i / 2 - 1] * 0.008), Color::Color(255, 0, 255, 255));
+
+				waveform2[i] = Vertex(Vector2f(1920 - ((i + 2) / 2 / (float)wavelength * 960), 685 + wav[i / 2 - 1] * 0.008), Color::Color(255, 0, 255, 255));
+				waveform2[i + 1] = Vertex(Vector2f(1920 - ((i + 2) / 2 / (float)wavelength * 960), 690 + wav[i / 2 - 1] * 0.008), Color::Color(255, 0, 255, 255));
+
 			}
+
 		}
-		hue.setFillColor(colours[colours.size()*fraction]);
-		redBar.setSize(Vector2f(300, -colours[colours.size()*fraction].r));
-		greenBar.setSize(Vector2f(300, -colours[colours.size()*fraction].g));
-		blueBar.setSize(Vector2f(300, -colours[colours.size()*fraction].b));
+		bgSprite.setColor(colours[colours.size()*fraction]);
 
 		window.clear();
-		window.draw(hue);
-		window.draw(beatSquare);
+		window.draw(bgSprite);
+		window.draw(sunSprite);
+		window.draw(fgSprite);
+
 		window.draw(waveform);
-		window.draw(redBar);
-		window.draw(greenBar);
-		window.draw(blueBar);
+		window.draw(waveform2);
 		window.display();
 
 	}

@@ -11,8 +11,8 @@ c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(128): warning C424
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(129): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(129): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  2 of 1531 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  0 of 1531 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Demo.vcxproj -> C:\Users\gameuser\Documents\Citations\newF\NewF\Release\Demo.exe

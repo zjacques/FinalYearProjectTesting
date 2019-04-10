@@ -34,17 +34,6 @@ int main()
 
 	fft.endString();
 	fft.printToFile();
-
-	/*while(window.isOpen())
-	{
-		while(window.pollEvent(event)) {}
-
-		fft.update() ;
-
-		window.clear() ;
-		fft.draw(window) ;
-		window.display() ;
-	}*/
 	system("PAUSE");
 	return 0;
 }
