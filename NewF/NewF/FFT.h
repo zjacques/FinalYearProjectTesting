@@ -11,7 +11,6 @@
 #include <queue>
 #include <math.h>        
 #include <thread> 
-#include "dr_flac.h"
 
 const double PI = 3.141592653589793238460 ;
 
@@ -53,13 +52,6 @@ private:
 	string path ;
 	SoundBuffer buffer ;
 	Sound sound ;
-
-	deque<double> livehistory;
-	int livebeats = 0;
-	float liveC = 1.3;
-	int lastBeats = 0;
-	int lastSecond = 0;
-	deque<double> bpshistory;
 
 	queue<float> beatTimes;
 	map<float, unsigned int> m_beatHistory;

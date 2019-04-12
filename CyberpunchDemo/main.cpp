@@ -21,8 +21,7 @@ int main()
 	cout << "Put an audio file in the Ressources folder (.wav will work, mp3 wont)" << endl;
 	cout << "Enter the file name (example.wav) : ";
 	cin >> path;
-	/*cout << "Enter the data file name (example.txt) : ";
-	cin >> mapPath;*/
+
 	mapPath = path.substr(0, path.find("."));
 	mapPath += ".txt";
 
@@ -93,15 +92,12 @@ int main()
 	waveform2[1] = Vertex(Vector2f(1920- 1 / (float)wavelength * 960, 690), Color::Color(255, 0, 255, 255));
 	for (int i = 2; i < wavelength * 2; i += 2)
 	{
-		/*if (i / 2 == 1)
-			cout << "bleh";*/
 		waveform2[i] = Vertex(Vector2f(1920 - (i/2 / (float)wavelength * 960), 685), Color::Color(255, 0, 255, 255));
 		waveform2[i + 1] = Vertex(Vector2f(1920 - (i/2 / (float)wavelength * 960), 690), Color::Color(255, 0, 255, 255));
 	}
 
 	auto cols = dat["colours"];
 	vector<Color> colours;
-	//for (int i = 0; i < dat["colours"].size(); i++)
 	for (auto& element : dat["colours"])
 	{
 		colours.push_back(Color(255 / (float)element["R"], 255 / (float)element["G"], 255 / (float)element["B"]));
@@ -115,8 +111,6 @@ int main()
 	RectangleShape beatSquare;
 	beatSquare.setPosition(100, 400);
 	beatSquare.setSize(Vector2f(100, 100.f));
-
-
 
 	//begin replay
 	timer.restart();

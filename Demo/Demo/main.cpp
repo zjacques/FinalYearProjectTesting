@@ -56,7 +56,6 @@ int main()
 
 	auto cols = dat["colours"];
 	vector<Color> colours;
-	//for (int i = 0; i < dat["colours"].size(); i++)
 	for (auto& element : dat["colours"])
 	{
 		colours.push_back(Color(255 / (float)element["R"], 255 / (float)element["G"], 255 / (float)element["B"]));

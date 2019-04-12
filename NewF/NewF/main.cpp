@@ -14,8 +14,6 @@ int main()
 	cout<<"Put an audio file in the Ressources folder (.wav will work, mp3 wont)"<<endl;
 	cout<<"Enter the file name (example.wav) : " ;
 	cin>>path ;
-	/*cout<<"Enter the buffer size treated by the fft (powers of two works best like 16384 or 8192)"<<endl;
-	cin>>bufferSize ;*/
 	bufferSize = 8192;
 
 	FFT fft("Ressources/"+path,bufferSize) ;
@@ -23,7 +21,6 @@ int main()
 	Event event ;
 
 	fft.beginString();
-
 
 	std::thread bpmThread = std::thread(&FFT::beatDetect, &fft);
 	std::thread waveThread = std::thread(&FFT::waveForm, &fft);

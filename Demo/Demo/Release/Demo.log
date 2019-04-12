@@ -1,17 +1,17 @@
 ﻿  main.cpp
-c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(62): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(110): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(117): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(123): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(61): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(109): warning C4244: 'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(116): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(122): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(125): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(126): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(126): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(127): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(127): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(128): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
 c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(128): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(129): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-c:\users\gameuser\documents\citations\newf\demo\demo\main.cpp(129): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  0 of 1531 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 1531 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

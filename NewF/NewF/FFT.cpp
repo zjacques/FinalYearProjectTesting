@@ -6,7 +6,7 @@ FFT::FFT(string const& _path,int const& _bufferSize)
 	if(!buffer.loadFromFile(path)) std::cout<<"Unable to load buffer"<<endl ;
 	songname = path.substr(0, path.find("."));
 	songname = songname.substr(songname.find("/")+1);
-	drflac file;
+
 	int channels = buffer.getChannelCount();
 	sampleRate = buffer.getSampleRate()*buffer.getChannelCount() ;
 	sampleCount = buffer.getSampleCount() ;
@@ -46,25 +46,20 @@ void FFT::hammingWindow()
 		for (int i = mark; i < bufferSize + mark; i++)
 		{
 			sample[i - mark] = Complex(buffer.getSamples()[i] * window[i - mark], 0);
-			//VA1[i - mark] = Vertex(Vector2f(20, 250) + Vector2f((i - mark) / (float)bufferSize * 700, sample[i - mark].real()*0.005), Color::Color(255, 0, 0, 50));
 		}
 	}
 }
 
-//runs through every sample in the buffer(the whole file) and plots 1000 points across it. no windows, just selected samples and their
-// basic magnitudes
-//It's not pretty.
+//runs through every sample in the buffer(the whole file) and plots points across it at intervals of the buffer size.
+//No windows, just selected samples and their basic magnitudes
 void FFT::waveForm()
 {
 	waveStream << ",\n\"m\":[";
 	int lastmark = 1;
-	//while (currentSample < sampleCount-(bufferSize / 2))
-	//{
-	//for (int i = 0; i < 1000; i++)
+
 	int numpoints = sampleCount / bufferSize;
 	for (int i = 0; i < numpoints; i++)
 	{
-		//sample[i - mark] = Complex(buffer.getSamples()[i], 0);
 		float x = (float)i / (float)numpoints;
 		float n = x * (float)sampleCount;
 		int max = 0;
@@ -75,9 +70,6 @@ void FFT::waveForm()
 				max += (int)buffer.getSamples()[j];
 			else
 				min += (int)buffer.getSamples()[j];
-			//max = std::max(max, (int)buffer.getSamples()[j]);
-			//min = std::min(min, (int)buffer.getSamples()[j]);
-			//avg += buffer.getSamples()[j];
 		}
 		Int16 sm = (int)buffer.getSamples()[i];
 		if (((int)n - lastmark) / 2 != 0)
@@ -92,16 +84,12 @@ void FFT::waveForm()
 		lastmark = (int)n;
 		if (i != (numpoints-1))
 			waveStream << ",\n";
-		//VA1[i] = Vertex(Vector2f(20, 250) + Vector2f(i / (float)numpoints * 700, sm*0.004), Color::Color(255, 0, 0, 255));
-		//VA1[mark] = Vertex(Vector2f(20, 250) + Vector2f((mark) / (float)bufferSize * 700, sample[mark].real()*0.005), Color::Color(255, 0, 0, 50));
 	}
 	waveStream << "]\n";
 	std::cout << "wave made" << std::endl;
 }
 
 //The fft function I got from this code sample.
-//Haven't touched it
-//Here there be dragons
 void FFT::fft(CArray &x)
 {
 	const int N = x.size();
@@ -121,12 +109,14 @@ void FFT::fft(CArray &x)
 	}
 }
 
+//Resets the output string and opens it for JSON
 void FFT::beginString()
 {
 	outputString.clear(); 
 	outputString << "{";
 }
 
+//Adds all the output strings together into one and closes the JSON
 void FFT::endString()
 {
 	outputString << bmpStream.str();
@@ -135,6 +125,8 @@ void FFT::endString()
 	outputString << "}";
 }
 
+//Prints the output string to a file with the same name as the audio file
+//Please use beginString and endString to insert your data to the string before printing
 void FFT::printToFile()
 {
 	ofstream myfile;
@@ -327,22 +319,16 @@ void FFT::beatDetect()
 					beats++;
 					double sthugg = ((double)currentSample / (double)sampleRate);
 					beatTimes.push( sthugg);
-					//std::cout << getMostCommonBPM() << std::endl;
 					auto gguhts = ((double)currentSample / (double)sampleRate) - beatTimes.front();
 					while (gguhts >= 1)
 					{
 						beatTimes.pop();
 						if (beatTimes.empty()) break;
 					}
-					//std::cout << "beat " << beats << "\n";
-					//std::cout << "threshold " << C << "\n";
-					//double bpm = livebeats / (sound.getPlayingOffset().asSeconds() / 60);
-					//std::cout << "bpm " << floor(bpm) << "\n";
-
 				}
 			}
 			history.push_back(instantEnergy);
-			//if(history is too long(greater than 1 second should be)) then remove one from it
+			
 			if (history.size() > sampleRate/(bufferSize/4))
 			{
 				history.pop_front();
@@ -352,11 +338,9 @@ void FFT::beatDetect()
 			{
 				double ms = (double)(beatTimes.back() - beatTimes.front()) / ((double)beatTimes.size() - 1);
 				double est = 60.0 / ms;
-				//float roundedEst = (float)(floor(est * 100.f) / 100.f);
 				float roundedEst = (float)(floor(est));
 				if (roundedEst > 200)
 					roundedEst /= 2;
-				//cout << roundedEst << endl;
 				if (m_beatHistory.find(roundedEst) != m_beatHistory.end())
 				{
 					++m_beatHistory[roundedEst];
@@ -369,19 +353,13 @@ void FFT::beatDetect()
 			startSample += (bufferSize/2);
 			
 		}
-		//cout << second << endl;
 	}
 	std::cout << "BPM is about : " << getMostCommonBPM() << std::endl;
 	bmpStream << "\"BPM\": " << getMostCommonBPM() << "\n";
-	/*float duration = buffer.getDuration().asSeconds();
-	duration /= 60;
-	double bpm = (double)beats / (duration);
-	std::cout << "BPM is about : " << bpm << endl;*/
 }
 
 float FFT::getMostCommonBPM()
 {
-	/*return m_bpmEstimates[ subband ];*/
 	float bestGuessBpm = 0.f;
 	unsigned int highestCount = 0;
 	for (std::map< float, unsigned int >::const_iterator iter = m_beatHistory.begin(); iter != m_beatHistory.end(); ++iter)
